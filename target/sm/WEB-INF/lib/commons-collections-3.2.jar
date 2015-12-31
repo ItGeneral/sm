@@ -1,0 +1,125 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>dooioo.org</title>
+
+<meta name="description" content="百度一下 你就知道" />
+<meta name="keywords" content="百度搜索,图片搜索,内容搜索" />
+<link rel="stylesheet" href="http://cdn.dragonstatic.com/parking/css/oneclick.css" type="text/css" />
+<script type="text/javascript" src="http://cdn.dragonstatic.com/parking/js/client2.js" charset="UTF-8"></script>
+<script type="text/javascript" src="http://cdn.dragonstatic.com/parking/js/track.js"></script>
+<script type="text/javascript" src="http://cpro.baidustatic.com/cpro/ui/dp.js"></script>
+<script type="text/javascript" src="http://cpro.baidustatic.com/cpro/ui/ci.js"></script>
+
+
+
+<script type="text/javascript">
+var pageinfo = {ad:1};
+</script>
+</head>
+<body>
+	
+	
+
+	
+	
+		
+	<div style="width:960px;margin: 0 auto;">
+		
+		<div style="width:960px; height:300px; background:url(http://cdn.dragonstatic.com/parking/images/tibet.jpg);">
+			<div style="padding-top:10px;padding-left:10px;font-size:30px;color:#8c8682;">dooioo.org</div>
+		</div>
+	</div>
+	
+	<div style="width:960px;margin: 0 auto;overflow: hidden;background-color:#fff;padding-bottom:5px;">
+		
+			<div style="width:200px; float: left; background-color:#fff;margin: 0 auto; padding-left:20px; padding-top:15px;">
+				<div id="cpro_u109200302">
+                            <script type="text/javascript">
+                                var tempData = {
+                                    n: dpClient,
+                                    tn: "baiduCustSTagLinkUnit",
+									skin: "tabcloud_skin_2",
+									stid: 5,
+                                    tu: slotConfig["luList"],
+                                    rsi1: 1100,
+                                    rsi0: 190,
+                                    rad: 1,
+                                    rss0: "",
+                                    rss1: "",
+                                    rss2: "",
+                                    rss6: "e10900",
+                                    rsi5: 1,
+                                    at: "text",
+                                    cad: 1,
+                                    aurl: "",
+                                    rss7: "ffffff",
+                                    titSU: 0,
+                                    titFF: encodeURIComponent("arial","宋体"),
+                                    conSL: 0,
+                                    bdh: 1,
+                                    titFS: 14,
+                                    adn: 25,
+                                    conBW: 0,
+                                    hn: 25,
+                                    wn: 1,
+                                    ie: 0
+                                };
+                                custInlayRender(tempData);
+                                tempData = null;
+                            </script>
+                        </div>
+			</div>
+			
+			<div style="width:700px;float:right;background-color:#fff;margin-left:20px;padding-top:25px;padding-bottom:15px;">
+				<div id="cpro_u109200303" class=""></div>
+				<script type="text/javascript">
+					var tempData = {
+						n : dpClient,
+						tu : slotConfig["tuwen"],
+						rsi1 : 1100,
+						rsi0 : 700,
+						rad : 1,
+						rss0 : "",
+						rss1 : "",
+						rss2 : "",
+						rss4 : "",
+						rss6 : "e10900",
+						at : "text",
+						cad : 1,
+						aurl : "",
+						rss7 : "ffffff",
+						wn : 1,
+						hn : 10,
+						titFS : 24,
+						titFF: encodeURIComponent("arial","宋体"),
+						desFS : 16,
+						urlFS : 16,
+						conSL : 0,
+						iteRS : 20,
+						isIE : 0
+					};
+					custInlayRender(tempData);
+					tempData = null;
+				</script>
+			</div>
+		
+	</div>
+	
+	
+
+	<div style="width: 960px; margin: 0 auto; text-align:center;padding-top:20px;">
+		
+		&nbsp;&nbsp; Copyright &copy; dooioo.org
+	</div>
+
+
+
+
+
+</body>
+</html>
