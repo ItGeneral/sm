@@ -1,6 +1,7 @@
 package com.springapp.mvc;
 
-import com.utils.email.FluentEmailUtil;
+import com.utils.FluentEmailUtils;
+
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ public class EmailTest {
         list.add("102100@sh.lianjia.com");
         List<String> attachList = new ArrayList<String>();
         attachList.add("src/main/resources/td-mail.properties");
-        FluentEmailUtil.to("102100@sh.lianjia.com")
+        FluentEmailUtils.to("102100@sh.lianjia.com")
                 .senderEmail("eterte999@sh.lianjia.com")
                 .senderPwd("Wsx246%#!5834")
                 .cc("102sfd100@sh.lianjia.com")
