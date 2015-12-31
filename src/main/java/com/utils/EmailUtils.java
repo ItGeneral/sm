@@ -52,8 +52,8 @@ public class EmailUtils {
     }
 
     public EmailUtils(String senderEmail, String senderPwd) {
-        senderEmail = senderEmail;
-        senderPwd = senderPwd;
+        this.senderEmail = senderEmail;
+        this.senderPwd = senderPwd;
     }
 
     public EmailUtils cc(String cc) {
