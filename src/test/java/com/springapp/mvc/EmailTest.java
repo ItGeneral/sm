@@ -31,9 +31,8 @@ public class EmailTest {
         list.add("102100@sh.lianjia.com");
         List<String> attachList = new ArrayList<String>();
         attachList.add("src/main/resources/td-mail.properties");
-        EmailUtils.to("102100@sh.lianjia.com")
-                .senderEmail("eterte999@sh.lianjia.com")
-                .senderPwd("Wsx246%#!5834")
+        EmailUtils.senderEmail("eterte999@sh.lianjia.com","Wsx246%#!5834")
+                .to(list)
                 .cc("102sfd100@sh.lianjia.com")
                 .subject("邮件测试1")
                 .content("Dear All,ahahahahahahahahahaa")
