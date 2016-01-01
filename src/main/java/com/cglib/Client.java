@@ -9,13 +9,13 @@ public class Client {
 
     public static void main(String[] args){
         //不使用代理
-        /*UserService userService = UserServiceFactory.getInstance();
-        doMethod(userService);*/
+        UserService userService = UserServiceFactory.getInstance();
+        doMethod(userService);
         //使用动态代理，只有boss才有操作的权限，John没有任何权限
-        /*UserService userService1 = UserServiceFactory.getProxyInstance(new MyCglibProxy("boss"));
+        UserService userService1 = UserServiceFactory.getProxyInstance(new MyCglibProxy("boss"));
         userService1.insert();
         UserService userService2 = UserServiceFactory.getProxyInstance(new MyCglibProxy("John"));
-        userService2.insert();*/
+        userService2.insert();
 
         //使用过滤方法,query方法所有人都有权限，其他方法没有
         UserService userService3 = UserServiceFactory.getProxyInstanceByFilter(new MyCglibProxy("John"));
