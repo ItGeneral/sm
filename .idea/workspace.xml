@@ -2,27 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f63f9737-e10b-4427-9ed0-2bbdf0742e41" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/cglib/Client.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__cglib_cglib_3_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__cglib_cglib_nodep_3_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__log4j_log4j_1_2_17.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_4_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/cglib/MyCglibProxy.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/cglib/MyProxyFilter.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/cglib/UserService.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/cglib/UserServiceFactory.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/resources/enchace.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/com/utils/EmailSendUtil.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/com/utils/SimpleAuthenticator.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/sm/WEB-INF/classes/com/utils/EmailSendUtil.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/sm/WEB-INF/classes/com/utils/SimpleAuthenticator.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/sm/WEB-INF/lib/log4j-1.2.14.jar" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/sm.war" afterPath="$PROJECT_DIR$/target/sm.war" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/mail.properties" afterPath="$PROJECT_DIR$/target/classes/mail.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/sm/WEB-INF/classes/mail.properties" afterPath="$PROJECT_DIR$/target/sm/WEB-INF/classes/mail.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sm.iml" afterPath="$PROJECT_DIR$/sm.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/artifacts/sm_war_exploded.xml" afterPath="$PROJECT_DIR$/.idea/artifacts/sm_war_exploded.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="sm.iws" />
@@ -906,7 +885,7 @@
       <workItem from="1451559244326" duration="35000" />
       <workItem from="1451559581794" duration="51000" />
       <workItem from="1451627263068" duration="672000" />
-      <workItem from="1451658566814" duration="5309000" />
+      <workItem from="1451658566814" duration="5562000" />
     </task>
     <task id="LOCAL-00001" summary="修改工具测试类">
       <created>1451556008949</created>
@@ -918,7 +897,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="54376000" />
+    <option name="totallyTimeSpent" value="54629000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="773" extended-state="0" />
