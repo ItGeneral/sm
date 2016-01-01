@@ -10,11 +10,16 @@ import java.lang.reflect.Method;
  * 代理过滤器,过滤哪些方法可以试用，哪些不可以
  */
 public class MyProxyFilter implements CallbackFilter {
+    private String methodName;
 
-    //query方法谁都有权限
+    public MyProxyFilter (String methodName){
+        this.methodName = methodName;
+    }
+
+    //methodName方法谁都有权限调用
     @Override
     public int accept(Method method) {
-        if(!"query".equalsIgnoreCase(method.getName()))
+        if(!this.methodName.equalsIgnoreCase(method.getName()))
             return 0;
         return 1;
     }
