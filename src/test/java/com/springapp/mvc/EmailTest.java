@@ -27,18 +27,15 @@ public class EmailTest {
      */
     public static void sendEmail() throws Exception{
         List<String> list = new ArrayList<String>();
-        list.add("ksjskbgshg@qq.com");
         list.add("102100@sh.lianjia.com");
         List<String> attachList = new ArrayList<String>();
         attachList.add("src/main/resources/td-mail.properties");
         EmailUtils.senderEmail("eterte999@sh.lianjia.com","Wsx246%#!5834")
                 .to(list)
-                .cc("102sfd100@sh.lianjia.com")
+                .cc("98994@sh.lianjia.com")
                 .subject("邮件测试1")
                 .content("Dear All,ahahahahahahahahahaa")
-                .attach("src/main/resources/td-mail.properties")
-                .attach("td-mail.properties", new FileInputStream("src/main/resources/td-mail.properties"))
-                .attach(attachList)
+                .attach("/Users/kevensong/practice/sm/src/main/java/com/utils/NewReplaceTmpUtils.java")
                 .send();
     }
 
