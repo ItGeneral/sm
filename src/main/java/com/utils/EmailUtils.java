@@ -292,7 +292,7 @@ public class EmailUtils {
         Session.getDefaultInstance(p);
     }
 
-    public static void  main() throws MessagingException, IOException {
+    public static void  main(String args[]) throws MessagingException, IOException {
         EmailUtils.from("发送邮箱地址","发送邮箱密码")
                 .to("主收件人邮箱地址")
                 .cc("抄送人邮箱地址")

@@ -51,9 +51,7 @@
 [INFO] [2016-01-02 01:12:01][com.cglib.MyCglibProxy]调用的方法：insert
 [INFO] [2016-01-02 01:15:46][com.cglib.MyCglibProxy]调用的方法：insert
 [INFO] [2016-01-02 01:15:46][com.cglib.MyCglibProxy]调用的方法：insert
-<<<<<<< HEAD
-=======
+
 [INFO] [2016-01-02 01:15:46][com.cglib.MyCglibProxy]调用的方法：insert
 [INFO] [2016-01-03 17:38:42][org.springframework.test.context.web.WebTestContextBootstrapper]Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener]
 [INFO] [2016-01-03 17:38:42][org.springframework.test.context.web.WebTestContextBootstrapper]Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@2c34f934, org.springframework.test.context.support.DependencyInjectionTestExecutionListener@12d3a4e9, org.springframework.test.context.support.DirtiesContextTestExecutionListener@240237d2, org.springframework.test.context.transaction.TransactionalTestExecutionListener@25a65b77, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@2ed0fbae]
->>>>>>> 7ee45268aa0978c1fd1da663bde739c92f33f564
