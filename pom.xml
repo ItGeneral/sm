@@ -29,6 +29,12 @@
             <version>${spring.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.7</version>
+        </dependency>
+
         <!--  邮件  -->
         <dependency>
             <groupId>javax.mail</groupId>

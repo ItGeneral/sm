@@ -3,418 +3,303 @@ import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.activation.MimetypesFileTypeMap;
 import javax.mail.*;
-import javax.mail.internet.*;
 import javax.mail.util.ByteArrayDataSource;
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import com.alibaba.fastjson.util.IOUtils;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+import javax.mail.Address;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.SendFailedException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import javax.mail.internet.MimeUtility;
 
-/**
- * 邮件工具类
- * Created by kevensong on 15/12/10.
- */
 public class EmailUtils {
-    //主收件人
-    private String to;
-    private List<String> toList = new ArrayList<String>();
-    //抄送人
-    private String cc;
-    private List<String> ccList = new ArrayList<String>();
-    //秘密抄送人
-    private String bcc;
-    private List<String> bccList = new ArrayList<String>();
-    //邮件主题
+    private Properties props;
+    private String from;
+    private String fromPwd;
+    private Set<Address> tos = new HashSet();
+    private Set<Address> ccs = new HashSet();
+    private Set<Address> bccs = new HashSet();
     private String subject;
-    //邮件正文
-    private String content;
-    //附件路径
-    private List<String> attachList = new ArrayList<String>();
-    //单个附件路径
-    private String attach;
-    //发送日期  字符串类型
-    private String dateStr;
-    //发送日期  Date类型
-    private Date date;
-    //存放需要发送的附件名称和流
-    private Map<String, InputStream> map = new HashMap<String, InputStream>();
-    //发送人邮箱地址
-    private static String senderEmail;
-    //发送人邮箱密码
-    private static String senderPwd;
-    //邮箱服务器信息
-    private String mailHost;
-    private String mailAuth;
+    private String body;
+    private Set<String> attachmentPathList = new HashSet();
+    private Map<String, InputStream> attachmentStreamMap = new HashMap();
+    private Date sendDate;
 
-    /**
-     *  起始节点
-     * @param to
-     * @return
-     */
-    public EmailUtils to(String to){
-        this.toList.add(to);
+    public static EmailUtils from(String from, String fromPwd) {
+        return new EmailUtils(from, fromPwd);
+    }
+
+    public EmailUtils props(Properties props) {
+        this.props = props;
         return this;
     }
 
-    public EmailUtils to(List<String> toList){
-        if(this.toList.size() > 0 ){
-            this.toList.addAll(toList);
-        }else{
-            this.toList = toList;
+    private EmailUtils(String from, String fromPwd) {
+        this.from = from;
+        this.fromPwd = fromPwd;
+    }
+
+    public EmailUtils to(String... tos) throws AddressException {
+        String[] var2 = tos;
+        int var3 = tos.length;
+
+        for(int var4 = 0; var4 < var3; ++var4) {
+            String to = var2[var4];
+            if(!Is.empty(to)) {
+                this.tos.add(new InternetAddress(to));
+            }
         }
+
         return this;
     }
 
-    public static EmailUtils senderEmail(String senderEmail, String senderPwd){
-        return new EmailUtils(senderEmail, senderPwd);
-    }
+    public EmailUtils to(Collection<String> toList) throws AddressException {
+        Iterator var2 = toList.iterator();
 
-    public EmailUtils(String senderEmail, String senderPwd){
-        this.senderEmail = senderEmail;
-        this.senderPwd = senderPwd;
-    }
-
-    /**
-     * 单个抄送人
-     * @param cc
-     * @return
-     */
-    public EmailUtils cc(String cc){
-        if(cc.equals("")) return this;
-        this.ccList.add(cc);
-        return this;
-    }
-
-    /**
-     * 多个抄送人
-     * @param ccList
-     * @return
-     */
-    public EmailUtils cc(List<String> ccList){
-        if(this.ccList.size() > 0 ){
-            this.ccList.addAll(ccList);
-        }else{
-            this.ccList = ccList;
+        while(var2.hasNext()) {
+            String to = (String)var2.next();
+            if(!Is.empty(to)) {
+                this.tos.add(new InternetAddress(to));
+            }
         }
+
         return this;
     }
 
-    /**
-     * 单个秘密抄送人
-     * @param bcc
-     * @return
-     */
-    public EmailUtils bcc(String bcc){
-        if(bcc.equals("")) return this;
-        this.bccList.add(bcc);
-        return this;
-    }
+    public EmailUtils cc(String... ccs) throws AddressException {
+        String[] var2 = ccs;
+        int var3 = ccs.length;
 
-    /**
-     * 多个秘密抄送人
-     * @param bccList
-     * @return
-     */
-    public EmailUtils bcc(List<String> bccList){
-        if(this.bccList.size() > 0 ){
-            this.bccList.addAll(bccList);
-        }else{
-            this.bccList = bccList;
+        for(int var4 = 0; var4 < var3; ++var4) {
+            String cc = var2[var4];
+            if(!Is.empty(cc)) {
+                this.ccs.add(new InternetAddress(cc));
+            }
         }
+
         return this;
     }
 
-    /**
-     * 邮件主题
-     * @param subject
-     * @return
-     */
-    public EmailUtils subject(String subject){
+    public EmailUtils cc(Collection<String> ccList) throws AddressException {
+        Iterator var2 = ccList.iterator();
+
+        while(var2.hasNext()) {
+            String cc = (String)var2.next();
+            if(!Is.empty(cc)) {
+                this.ccs.add(new InternetAddress(cc));
+            }
+        }
+
+        return this;
+    }
+
+    public EmailUtils bcc(String... bccs) throws AddressException {
+        String[] var2 = bccs;
+        int var3 = bccs.length;
+
+        for(int var4 = 0; var4 < var3; ++var4) {
+            String bcc = var2[var4];
+            if(!Is.empty(bcc)) {
+                this.bccs.add(new InternetAddress(bcc));
+            }
+        }
+
+        return this;
+    }
+
+    public EmailUtils bcc(Collection<String> bccList) throws AddressException {
+        Iterator var2 = bccList.iterator();
+
+        while(var2.hasNext()) {
+            String bcc = (String)var2.next();
+            if(!Is.empty(bcc)) {
+                this.bccs.add(new InternetAddress(bcc));
+            }
+        }
+
+        return this;
+    }
+
+    public EmailUtils subject(String subject) {
         this.subject = subject;
         return this;
     }
 
-    /**
-     * 邮件正文内容
-     * @param content
-     * @return
-     */
-    public EmailUtils content(String content){
-        this.content = content;
+    public EmailUtils body(String body) {
+        this.body = body;
         return this;
     }
 
-    /**
-     * 传多个附件
-     * @param attachList
-     * @return
-     */
-    public EmailUtils attach(List<String> attachList){
-        this.attachList = attachList;
-        return this;
-    }
+    public EmailUtils attachment(String... attachments) {
+        String[] var2 = attachments;
+        int var3 = attachments.length;
 
-    /**
-     * 传单个附件
-     * @param attach
-     * @return
-     */
-    public EmailUtils attach(String attach){
-        this.attachList.add(attach);
-        return this;
-    }
-    /**
-     * key 为文件名     value 为附件流
-     * @param key
-     * @param value
-     * @return
-     */
-    public EmailUtils attach(String key, InputStream value){
-        map.put(key, value);
-        return this;
-    }
-
-
-    /**
-     * 设置发送日期   String类型
-     * @param dateStr
-     * @return
-     */
-    public EmailUtils date(String dateStr){
-        this.dateStr = dateStr;
-        return this;
-    }
-
-    /**
-     * 设置邮件发送日期 Date类型
-     * @param date
-     * @return
-     */
-    public EmailUtils date(Date date){
-        this.date = date;
-        return this;
-    }
-
-    public EmailUtils mailHost(String mailHost){
-        this.mailHost = mailHost;
-        return this;
-    }
-
-    public EmailUtils mailAuth(String mailAuth){
-        this.mailAuth = mailAuth;
-        return this;
-    }
-
-    public void send() throws Exception {
-        if(Is.empty(senderEmail)){
-            throw new Exception("发送人邮箱地址不能为空，请初始化发件人邮箱地址");
-        }
-        if(Is.empty(senderPwd)){
-            throw new Exception("发送人邮箱密码不能为空，请初始化发件人邮箱密码");
-        }
-        if(Is.empty(mailHost)){
-            mailHost = "smtp.exmail.qq.com";
-        }
-        if(Is.empty(mailAuth)){
-            mailAuth = "true";
-        }
-        Properties properties = new Properties();
-        properties.put("mail.smtp.host", mailHost);
-        properties.put("mail.smtp.auth", mailAuth);
-        Session session = Session.getDefaultInstance(properties);
-        //设置邮件信息
-        Message mimeMessage = getMailMessage(session, toList==null?null:EmailListToAddress(toList),
-                ccList==null?null:EmailListToAddress(ccList),
-                bccList==null?null:EmailListToAddress(bccList), subject, date);
-
-        Multipart multipart = new MimeMultipart();
-        //添加正文
-        if(content != null && !content.equals("")){
-            BodyPart contentBodyPart = new MimeBodyPart();
-            contentBodyPart.setText(content);
-            multipart.addBodyPart(contentBodyPart);
-        }
-        //添加附件，附件内容为空，则不需要添加附件
-        addAttach(multipart, mimeMessage, map, attachList);
-
-        Transport transport = session.getTransport("smtp");
-        transport.connect(mailHost, senderEmail, senderPwd);
-        try{
-            transport.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
-        }catch(SendFailedException e){
-            //无效地址
-            Address[] inValidEmail = e.getInvalidAddresses();
-            toList = returnToEmail(inValidEmail, toList);
-            if(Is.empty(toList)){
-                throw new Exception("主收件人的邮箱地址错误，请重新设置主收件人的邮箱地址");
-            }
-            ccList = returnToEmail(inValidEmail, ccList);
-            bccList = returnToEmail(inValidEmail, bccList);
-            mimeMessage.setRecipients(Message.RecipientType.TO, EmailListToAddress(toList));
-            mimeMessage.setRecipients(Message.RecipientType.CC, EmailListToAddress(ccList));
-            mimeMessage.setRecipients(Message.RecipientType.BCC, EmailListToAddress(bccList));
-            transport.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
-        }
-        transport.close();
-    }
-
-
-    /**
-     *  获取有效的邮箱地址
-     * @param inValidEmail  有效的邮箱地址
-     * @param emailsList      发送人类型
-     * @return
-     * @throws Exception
-     */
-    private static List<String> returnToEmail(Address[] inValidEmail, List<String> emailsList) throws Exception {
-        List<String> list = new ArrayList<String>();
-        List<String> addreList = new ArrayList<String>();
-        for(Address address : inValidEmail){
-            addreList.add(address.toString());
-        }
-        for(String email : emailsList){
-            if(!addreList.contains(email)){
-                list.add(email);
+        for(int var4 = 0; var4 < var3; ++var4) {
+            String attachment = var2[var4];
+            if((new File(attachment)).exists()) {
+                this.attachmentPathList.add(attachment);
             }
         }
-        return getNewList(list);
+
+        return this;
     }
 
-    /**
-     * 取出list中重复的数据
-     * @param li
-     * @return
-     */
-    public static List<String> getNewList(List<String> li){
-        List<String> list = new ArrayList<String>();
-        for(int i=0; i<li.size(); i++){
-            String str = li.get(i);  //获取传入集合对象的每一个元素
-            if(!list.contains(str)){   //查看新集合中是否有指定的元素，如果没有则加入
-                list.add(str);
+    public EmailUtils attachment(Collection<String> attachmentList) {
+        Iterator var2 = attachmentList.iterator();
+
+        while(var2.hasNext()) {
+            String attachment = (String)var2.next();
+            if((new File(attachment)).exists()) {
+                this.attachmentPathList.add(attachment);
             }
         }
-        return list;
+
+        return this;
     }
 
-    /**
-     * 设置message的内容
-     * @param session
-     * @param toEmail
-     * @param ccEmails
-     * @param bccEmail
-     * @param subject
-     * @param date
-     * @return
-     * @throws Exception
-     */
-    private static Message getMailMessage(Session session, Address[] toEmail, Address[] ccEmails, Address[] bccEmail,
-                                          String subject, Date date) throws Exception {
+    public EmailUtils attachment(String name, InputStream in) {
+        this.attachmentStreamMap.put(name, in);
+        return this;
+    }
+
+    public EmailUtils sendDate(Date sendDate) {
+        this.sendDate = sendDate;
+        return this;
+    }
+
+    private Session getSession() {
+        return Is.empty(this.props)?Session.getDefaultInstance((Properties)null):Session.getInstance(this.props);
+    }
+
+    private MimeMessage buildMimeMessage(Session session) throws MessagingException {
         MimeMessage mimeMessage = new MimeMessage(session);
-        //设置发送人
-        mimeMessage.setFrom(new InternetAddress(senderEmail));
-        //设置主接受人
-        if(Is.empty(toEmail)){
-            throw new Exception("主收件人的邮箱地址不能为空，请设置主收件人的邮箱地址");
-        }
-        mimeMessage.setRecipients(Message.RecipientType.TO, toEmail);
-        //设置抄送人
-        if(!Is.empty(ccEmails)){
-            mimeMessage.setRecipients(Message.RecipientType.CC, ccEmails);
-        }
-        //设置秘密抄送人
-        if(!Is.empty(bccEmail)) {
-            mimeMessage.setRecipients(Message.RecipientType.BCC, bccEmail);
-        }
-        //设置邮件主题
-        if(!Is.empty(subject)) {
-            mimeMessage.setSubject(subject);
-        }
-        //设置邮件发送时间，如果传入的时间小于当前的时间，则发送时间为当前时间，否则为传入的时间
-        if(Is.empty(date)){
-            mimeMessage.setSentDate(new Date());
-        }else{
-            Date now = new Date();
-            if(now.getTime() > date.getTime()){
-                mimeMessage.setSentDate(new Date());
-            }else{
-                mimeMessage.setSentDate(date);
-            }
-        }
+        mimeMessage.setFrom(new InternetAddress(this.from));
+        this.fillRecipients(mimeMessage);
+        mimeMessage.setSubject(this.subject);
+        mimeMessage.setSentDate(!Is.empty(this.sendDate) && (new Date()).getTime() <= this.sendDate.getTime()?this.sendDate:new Date());
         return mimeMessage;
     }
 
-    /**
-     *  添加附件
-     * @param multipart
-     * @param mimeMessage
-     * @param map   key为附件名，value为附件内容
-     * @param urlPath
-     * @throws Exception
-     */
-    private static void addAttach(Multipart multipart, Message mimeMessage,
-                                  Map<String,InputStream> map, List<String> urlPath) throws Exception{
-        if(!Is.empty(urlPath)){
-            for(String path : urlPath){
-                if(Is.empty(path))break;
-                BodyPart bodyPart = new MimeBodyPart();
-                FileDataSource fileDataSource = new FileDataSource(path);
-                bodyPart.setDataHandler(new DataHandler(fileDataSource));
-                bodyPart.setFileName(MimeUtility.encodeWord(fileDataSource.getName(), "utf-8", null));
-                multipart.addBodyPart(bodyPart);
+    private void fillRecipients(MimeMessage mimeMessage) throws MessagingException {
+        mimeMessage.setRecipients(Message.RecipientType.TO, (Address[])this.tos.toArray(new InternetAddress[0]));
+        if(!Is.empty(this.ccs)) {
+            mimeMessage.setRecipients(Message.RecipientType.CC, (Address[])this.ccs.toArray(new InternetAddress[0]));
+        }
+
+        if(!Is.empty(this.bccs)) {
+            mimeMessage.setRecipients(Message.RecipientType.BCC, (Address[])this.bccs.toArray(new InternetAddress[0]));
+        }
+
+    }
+
+    private void addBody(Multipart multipart) throws MessagingException {
+        if(!Is.empty(this.body)) {
+            MimeBodyPart contentBodyPart = new MimeBodyPart();
+            contentBodyPart.setContent(this.body, "text/html; charset=utf-8");
+            multipart.addBodyPart(contentBodyPart);
+        }
+
+    }
+
+    private void addAttachment(Multipart multipart) throws MessagingException, IOException {
+        Iterator var2 = this.attachmentPathList.iterator();
+
+        String fileName;
+        while(var2.hasNext()) {
+            fileName = (String)var2.next();
+            if(!Is.empty(fileName)) {
+                MimeBodyPart content = new MimeBodyPart();
+                FileDataSource mimeType = new FileDataSource(fileName);
+                content.setDataHandler(new DataHandler(mimeType));
+                content.setFileName(MimeUtility.encodeWord(mimeType.getName(), "utf-8", (String)null));
+                multipart.addBodyPart(content);
             }
         }
-        if(!Is.empty(map)) {
-            for (String fileName : map.keySet()) {
-                if (Is.empty(fileName)) break;
-                InputStream content = map.get(fileName);
-                //根据文件名获取mimeType
-                String mimeType = new MimetypesFileTypeMap().getContentType(fileName);
-                BodyPart bodyPart = new MimeBodyPart();
-                ByteArrayDataSource byteArrayDataSource = new ByteArrayDataSource(content, mimeType);
+
+        var2 = this.attachmentStreamMap.keySet().iterator();
+
+        while(var2.hasNext()) {
+            fileName = (String)var2.next();
+            if(!Is.empty(fileName)) {
+                InputStream content1 = (InputStream)this.attachmentStreamMap.get(fileName);
+                String mimeType1 = (new MimetypesFileTypeMap()).getContentType(fileName);
+                MimeBodyPart bodyPart = new MimeBodyPart();
+                ByteArrayDataSource byteArrayDataSource = new ByteArrayDataSource(content1, mimeType1);
                 bodyPart.setDataHandler(new DataHandler(byteArrayDataSource));
-                //设置附件名称
-                if (fileName != null && !fileName.equals("")) {
-                    bodyPart.setFileName(MimeUtility.encodeWord(fileName, "utf-8", null));
-                }
+                bodyPart.setFileName(MimeUtility.encodeWord(fileName, "utf-8", (String)null));
                 multipart.addBodyPart(bodyPart);
-                content.close();
+                IOUtils.close(content1);
             }
         }
+
+    }
+
+    private void removeInValid(Address[] invalidAddresses) {
+        Address[] var2 = invalidAddresses;
+        int var3 = invalidAddresses.length;
+
+        for(int var4 = 0; var4 < var3; ++var4) {
+            Address address = var2[var4];
+            this.tos.remove(address);
+            this.ccs.remove(address);
+            this.bccs.remove(address);
+        }
+
+    }
+
+    public void send() throws MessagingException, IOException {
+        Session session = this.getSession();
+        MimeMessage mimeMessage = this.buildMimeMessage(session);
+        MimeMultipart multipart = new MimeMultipart();
+        this.addBody(multipart);
+        this.addAttachment(multipart);
         mimeMessage.setContent(multipart);
-    }
+        Transport transport = session.getTransport();
+        transport.connect(this.from, this.fromPwd);
 
-    /**
-     * List类型的邮件地址转换成Address[]
-     * @param emailList
-     * @return
-     * @throws AddressException
-     */
-    private static InternetAddress[] EmailListToAddress (List<String> emailList) throws AddressException {
-        if(Is.empty(emailList)) return null;
-        InternetAddress[] emails = new InternetAddress[emailList.size()];
-        int i = 0 ;
-        for(String email : emailList){
-            emails[i] = new InternetAddress(email);
-            i ++ ;
+        try {
+            transport.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
+        } catch (SendFailedException var6) {
+            this.removeInValid(var6.getInvalidAddresses());
+            this.fillRecipients(mimeMessage);
+            transport.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
         }
-        return emails;
+
+        transport.close();
     }
 
-    /**
-     * String类型的邮件地址（用“,”隔开）转换成Address[]
-     * @param emails
-     * @return
-     * @throws AddressException
-     */
-    private static InternetAddress[] EmailStringToAddress (String emails) throws AddressException {
-        if(Is.empty(emails)) return null;
-        int len = emails.split(",").length ;
-        String[] str = emails.split(",");
-        int i = 0 ;
-        InternetAddress[] emailsAddre = new InternetAddress[len] ;
-        for(String email : str){
-            emailsAddre[i] = new InternetAddress(email) ;
-            i ++ ;
-        }
-        return emailsAddre;
+    static {
+        Properties p = new Properties();
+        p.put("mail.smtp.host", "smtp.exmail.qq.com");
+        p.put("mail.transport.protocol", "smtp");
+        Session.getDefaultInstance(p);
     }
 
+    public static void  main() throws MessagingException, IOException {
+        EmailUtils.from("发送邮箱地址","发送邮箱密码")
+                .to("主收件人邮箱地址")
+                .cc("抄送人邮箱地址")
+                .bcc("暗送人邮箱地址")
+                .body("正文内容")
+                .attachment("附件,单个或多个文件地址")
+                .attachment("附件名称(含文件后缀名)","输入流")
+                .send();
+    }
 }
